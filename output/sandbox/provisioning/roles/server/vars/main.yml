@@ -1,0 +1,5 @@
+sudoer_list:
+  - name: admin
+    password: admin
+
+user_list: []
