@@ -11,6 +11,11 @@ The program can be easily installed and launched by following these steps:
 3. install python 3.xx preferably 3.12 and add it to Path
 4. using console write:          pip install venv
 5. create virtual environment:   python -m venv /path/to/venv
-6. move to extracted repo
-7. install dependencies:         pip install -r requirements.txt
-8. launch program and test it:   main.py
+6. activate venv:                /path/to/venv/Scripts/activate
+7. move to extracted repo
+8. install dependencies:         pip install -r requirements.txt
+9. launch program and test it:   main.py
+10. deactivate venv:             /path/to/venv/Scripts/deactivate
+
+steps 3 and 4 can be skipped if they are already installed
+step 5,6 and 10 can be ignored if you do not wish to run the program in virtual environment
