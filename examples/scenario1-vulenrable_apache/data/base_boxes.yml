@@ -1,0 +1,16 @@
+munikypo/ubuntu-22.04:
+  OS: ubuntu-22.04
+  mgmt_user: debian
+  mgmt_protocol: ssh
+  preconfigured_software: []
+  ansible: []
+
+munikypo/kali-2020.4:
+  OS: kali
+  mgmt_user: debian
+  mgmt_protocol: ssh
+  ansible: 
+    - name: Update keyring
+      get_url:
+        url: https://archive.kali.org/archive-key.asc
+        dest: /etc/apt/trusted.gpg.d/kali-archive-key.asc

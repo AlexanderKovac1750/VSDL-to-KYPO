@@ -1,0 +1,34 @@
+
+node desktop {
+	OS is kali ;
+	exists user admin with password kali ;
+	contains file documents/market_strategy.txt owned by admin ;
+	user admin can sudo ;
+	user WebServer can read documents/market_strategy.txt ;
+	contains file documents/index.html owned by WebServer ;
+	not ( user FileServer can read documents ) ;
+	exists user FileServer with password FS ;
+	mounts software vim ;
+	( ( ( mounts software openssl from 1.0.2 below 1.0.2zd ) or ( mounts software openssl from 1.1.0 below 1.1.1n ) or ( mounts software openssl from 3.0.0 below 3.0.2 ) ) or ( ( OS is debian_linux from 9.0 below 9.1 ) or ( OS is debian_linux from 10.0 below 10.1 ) or ( OS is debian_linux from 11.0 below 11.1 ) ) or ( ( mounts software cloud_volumes_ontap_mediator ) or ( mounts software clustered_data_ontap ) or ( mounts software clustered_data_ontap_antivirus_connector ) or ( mounts software santricity_smi-s_provider ) or ( mounts software storagegrid ) ) or ( ( OS is a250_firmware ) ) or ( ( ( basebox is HARDWARE_AGNOSTIC ) and ( basebox is UNSUPPORTED ) ) ) or ( ( OS is 500f_firmware ) ) or ( ( ( basebox is HARDWARE_AGNOSTIC ) and ( basebox is UNSUPPORTED ) ) ) or ( ( OS is fedora from 34 below 35 ) or ( OS is fedora from 36 below 37 ) ) or ( ( mounts software nessus below 8.15.4 ) or ( mounts software nessus from 10.0.0 below 10.1.2 ) ) or ( ( mounts software mariadb from 10.2.0 below 10.2.42 ) or ( mounts software mariadb from 10.3.0 below 10.3.33 ) or ( mounts software mariadb from 10.4.0 below 10.4.23 ) or ( mounts software mariadb from 10.5.0 below 10.5.14 ) or ( mounts software mariadb from 10.6.0 below 10.6.6 ) or ( mounts software mariadb from 10.7.0 below 10.7.2 ) ) or ( ( mounts software node.js from 12.0.0 to 12.12.0 ) or ( mounts software node.js from 12.13.0 below 12.22.11 ) or ( mounts software node.js above 14.0.0 to 14.14.0 ) or ( mounts software node.js from 14.15.0 below 14.19.1 ) or ( mounts software node.js above 16.0.0 to 16.12.0 ) or ( mounts software node.js from 16.13.0 below 16.14.2 ) or ( mounts software node.js above 17.0.0 below 17.7.2 ) ) ) ;
+}
+
+node router {
+	type is router ;
+	OS is same as desktop ;
+}
+
+network desktop-switch {
+	ip range from 192.168.0.0 to 192.168.0.255 ;
+	node desktop has IP 192.168.0.15 ;
+	node router is connected ;
+	gateway has direct access to the Internet ;
+	is user accessible ;
+	firewall blocks port 80 ;
+	firewall blocks port 880 ;
+	firewall blocks ip 192.168.0.80 ;
+	firewall blocks ip 192.168.0.85 ;
+	firewall forwards port 443 to 4430 ;
+	firewall forwards ip 192.168.0.15 to 192.168.0.25 ;
+	firewall forwards port 4453 to 4530 ;
+	firewall forwards ip 192.168.0.45 to 192.168.0.65 ;
+}
