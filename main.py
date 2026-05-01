@@ -81,7 +81,7 @@ if __name__ == "__main__":
     allowed_options=dict({
         "-i":       "-i <input file>    : change input file, default is input.vsdl",
         "-o":       "-o <output folder> : change output folder, default is output/",
-        "-stage":"-s <start>  |  -s <start:end>  : select stages to run",
+        "-stage":"-stage <start>  |  -s <start:end>  : select stages to run",
         "--silent": "--silent : disables debugging print outs",
         "--help":   "--help   : prints out available options"
         })
