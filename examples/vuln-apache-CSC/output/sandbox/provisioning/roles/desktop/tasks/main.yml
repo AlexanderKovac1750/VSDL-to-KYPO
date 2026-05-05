@@ -1,0 +1,73 @@
+- name: Update keyring
+  get_url:
+    url: https://archive.kali.org/archive-key.asc
+    dest: /etc/apt/trusted.gpg.d/kali-archive-key.asc
+
+- name: Create users
+  user:
+    name: '{{ item.name }}'
+    password: '{{ item.password | password_hash("md5")}}'
+    create_home: 'yes'
+    shell: /bin/bash
+
+  loop: '{{ user_list }}'
+
+- name: Check wheel group
+  group:
+    name: wheel
+    state: present
+
+- name: Allow wheel group to have sudo
+  lineinfile:
+    dest: /etc/sudoers
+    state: present
+    regexp: ^%wheel
+    line: '%wheel    ALL=(ALL:ALL) NOPASSWD:ALL'
+    validate: visudo -cf %s
+
+- name: Create sudoers
+  user:
+    name: '{{ item.name }}'
+    password: '{{ item.password | password_hash("md5")}}'
+    group: wheel
+    append: 'yes'
+    create_home: 'yes'
+    shell: /bin/bash
+
+  loop: '{{ sudoer_list }}'
+
+- name: Create directories
+  file:
+    path: /{{ item.path }}
+    state: directory
+    mode: '0755'
+    owner: '{{ item.owner }}'
+
+  loop: '{{ directory_list }}'
+
+- name: Copy files
+  copy:
+    src: ../files/{{ item.path }}
+    dest: /{{ item.path }}
+    mode: '0744'
+    owner: '{{ item.owner }}'
+
+  loop: '{{ file_list }}'
+
+- name: Modify ACL
+  acl:
+    default: false
+    state: present
+    entity: '{{ item.user }}'
+    etype: user
+    path: /{{ item.path }}
+    permissions: '{{ item.mode }}'
+
+  loop: '{{ permission_list }}'
+
+- name: Install packages
+  apt:
+    name:
+      - nghttp2-client
+    update_cache: true
+    state: present

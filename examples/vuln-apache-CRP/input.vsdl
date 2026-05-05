@@ -1,0 +1,52 @@
+scenario vuln-apache-dos{
+node desktop{
+	OS is kali;
+	exists user admin with password kali;
+	user admin can sudo;
+	exists user guest;
+
+	contains file "documents/market strategy.txt" owned by admin;
+	not user guest can read "documents/market strategy.txt";
+
+	contains file documents/notes.txt owned by guest;
+	not user guest can write documents/notes.txt;
+
+	mounts software nghttp2-client;
+}
+
+node router{
+	type is router;
+	OS is same as desktop;
+	memory is larger than 1GB;
+
+	exists user admin;
+	user admin can sudo;
+}
+
+node server{
+	exists user admin;
+	user admin can sudo;
+
+	OS is ubuntu;
+	suffers from CVE-2020-11993;
+}
+
+network server-switch{
+	ip range from 192.168.1.0 to 192.168.1.127;
+	node server has IP 192.168.1.15;
+	node router is connected;
+
+	firewall forwards ip 213.81.150.11 to 195.49.188.162;
+	firewall blocks ip 146.190.62.39;
+	gateway has direct access to the Internet;
+}
+
+network desktop-switch {
+	ip range from 192.168.0.0 to 192.168.0.255;
+	node desktop has IP 192.168.0.15;
+	node router is connected;
+
+	firewall blocks port 22;
+	firewall forwards port 880 to 8080;
+}
+}

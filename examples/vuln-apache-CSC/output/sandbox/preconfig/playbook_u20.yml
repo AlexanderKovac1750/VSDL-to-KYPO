@@ -1,0 +1,81 @@
+---
+- name: Router configuration
+  hosts: routers
+  become: yes
+  tasks:
+
+    - name: Enable IP forwarding
+      sysctl:
+        name: net.ipv4.ip_forward
+        reload: yes
+        sysctl_set: yes
+        value: '1'
+      vars: {}
+
+    - name: Set up postrouting
+      iptables:
+        table: nat
+        chain: POSTROUTING
+        jump: SNAT
+        out_interface: '{{ ansible_default_ipv4.interface }}'
+        to_source: '{{ ansible_default_ipv4.address }}'
+
+
+- name: Linux configuration
+  hosts: ssh
+  become: yes
+  tasks:
+
+    - name: Install net-tools
+      apt:
+        name: net-tools
+
+    - name: Add aliases of all devices
+      lineinfile:
+        line: '{{ item.key }} {{ item.value }}'
+        path: /etc/hosts
+      with_dict: '{{ device_aliases }}'
+
+    - name: Ensure netplan is installed
+      apt:
+        name: netplan.io
+        state: present
+
+    - name: Deploy netplan configuration
+      template:
+        src: roles/common/templates/netplan.yaml.j2
+        dest: /etc/netplan/50-ansible.yaml
+        mode: '0644'
+
+    - name: Apply netplan config
+      command: netplan apply
+
+    - name: Remove old default route
+      command: ip route del default
+
+    - name: Add new default route
+      command: ip route add default via 192.168.1.1 dev enp0s8
+
+
+- name: Windows configuration
+  hosts: winrm
+  tasks:
+
+    - name: Add aliases of all devices
+      win_hosts:
+        state: present
+        canonical_name: '{{ item.value }}'
+        ip_address: '{{ item.key }}'
+      with_dict: '{{ device_aliases }}'
+
+
+- name: Controller configuration
+  hosts: controller
+  become: yes
+  tasks:
+
+    - name: Install pywinrm
+      pip:
+        name: pywinrm
+        executable: "pip3"
+...

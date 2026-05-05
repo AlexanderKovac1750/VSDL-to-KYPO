@@ -1,0 +1,27 @@
+sudoer_list:
+  - name: admin
+    password: kali
+
+user_list:
+  - name: guest
+    password: guest
+
+file_list:
+  - path: documents/notes.txt
+    owner: guest
+
+  - path: documents/market strategy.txt
+    owner: admin
+
+directory_list:
+  - path: documents
+    owner: root
+
+permission_list:
+  - path: documents/market strategy.txt
+    user: guest
+    mode: '-'
+
+  - path: documents/notes.txt
+    user: guest
+    mode: rx

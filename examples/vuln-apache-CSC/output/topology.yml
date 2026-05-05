@@ -1,0 +1,54 @@
+name: vuln-apache-dos
+hosts:
+  - name: desktop
+    flavor: csirtmu.tiny1x2
+    base_box:
+      image: munikypo/kali-2020.4
+      mgmt_user: debian
+      mgmt_protocol: ssh
+
+  - name: server
+    flavor: csirtmu.tiny1x2
+    base_box:
+      image: munikypo/ubuntu-22.04
+      mgmt_user: ubuntu
+      mgmt_protocol: ssh
+
+routers:
+  - name: router
+    flavor: csirtmu.tiny1x2
+    base_box:
+      image: munikypo/kali-2020.4
+      mgmt_user: debian
+      mgmt_protocol: ssh
+
+wan:
+  name: internet-connection
+  cidr: 100.100.100.0/24
+
+networks:
+  - name: desktop-switch
+    cidr: 192.168.0.0/24
+
+  - name: server-switch
+    cidr: 192.168.1.0/25
+
+net_mappings:
+  - host: desktop
+    network: desktop-switch
+    ip: 192.168.0.15
+
+  - host: server
+    network: server-switch
+    ip: 192.168.1.15
+
+router_mappings:
+  - router: router
+    network: desktop-switch
+    ip: 192.168.0.1
+
+  - router: router
+    network: server-switch
+    ip: 192.168.1.1
+
+groups: []

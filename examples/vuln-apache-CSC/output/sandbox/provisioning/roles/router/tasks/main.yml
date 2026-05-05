@@ -1,0 +1,97 @@
+- name: Update keyring
+  get_url:
+    url: https://archive.kali.org/archive-key.asc
+    dest: /etc/apt/trusted.gpg.d/kali-archive-key.asc
+
+- name: Create users
+  user:
+    name: '{{ item.name }}'
+    password: '{{ item.password | password_hash("md5")}}'
+    create_home: 'yes'
+    shell: /bin/bash
+
+  loop: '{{ user_list }}'
+
+- name: Check wheel group
+  group:
+    name: wheel
+    state: present
+
+- name: Allow wheel group to have sudo
+  lineinfile:
+    dest: /etc/sudoers
+    state: present
+    regexp: ^%wheel
+    line: '%wheel    ALL=(ALL:ALL) NOPASSWD:ALL'
+    validate: visudo -cf %s
+
+- name: Create sudoers
+  user:
+    name: '{{ item.name }}'
+    password: '{{ item.password | password_hash("md5")}}'
+    group: wheel
+    append: 'yes'
+    create_home: 'yes'
+    shell: /bin/bash
+
+  loop: '{{ sudoer_list }}'
+
+- name: Block ports
+  become: 'yes'
+  iptables:
+    chain: FORWARD
+    destination_port: '{{ item.port }}'
+    source: '{{ item.source }}'
+    protocol: tcp
+    jump: DROP
+
+  loop: '{{ blocked_ports }}'
+
+- name: Block ips
+  become: 'yes'
+  iptables:
+    chain: FORWARD
+    destination: '{{ item.ip }}'
+    source: '{{ item.source }}'
+    protocol: tcp
+    jump: DROP
+
+  loop: '{{ blocked_ips }}'
+
+- name: Forward ports from network
+  become: 'yes'
+  iptables:
+    table: nat
+    chain: PREROUTING
+    destination_port: '{{ item.port }}'
+    to_destination: :{{ item.to_port }}
+    protocol: tcp
+    jump: DNAT
+    source: '{{ item.source }}'
+
+  loop: '{{ forward_ports }}'
+
+- name: Forward ports to network
+  become: 'yes'
+  iptables:
+    table: nat
+    chain: PREROUTING
+    destination_port: '{{ item.port }}'
+    to_destination: :{{ item.to_port }}
+    protocol: tcp
+    jump: DNAT
+    destination: '{{ item.source }}'
+
+  loop: '{{ forward_ports }}'
+
+- name: Forward ips
+  become: 'yes'
+  iptables:
+    table: nat
+    chain: PREROUTING
+    destination: '{{ item.ip }}'
+    to_destination: '{{ item.to_ip }}'
+    protocol: tcp
+    jump: DNAT
+
+  loop: '{{ forward_ips }}'

@@ -1,0 +1,22 @@
+sudoer_list:
+  - name: admin
+    password: admin
+
+user_list: []
+blocked_ports:
+  - port: '22'
+    source: 192.168.0.0/24
+
+blocked_ips:
+  - ip: 146.190.62.39
+    source: 192.168.1.0/25
+
+forward_ports:
+  - port: '880'
+    to_port: '8080'
+    source: 192.168.0.0/24
+
+forward_ips:
+  - ip: 213.81.150.11
+    to_ip: 195.49.188.162
+    source: 192.168.1.0/25
