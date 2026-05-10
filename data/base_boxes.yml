@@ -1,15 +1,14 @@
-ubuntu-22.04:
+munikypo/ubuntu-22.04:
   OS: ubuntu-22.04
   mgmt_user: ubuntu
   mgmt_protocol: ssh
   preconfigured_software: []
   ansible: []
 
-kali:
-  OS: kali
+munikypo/kali-2020.4:
+  OS: kali-2020.4
   mgmt_user: debian
   mgmt_protocol: ssh
-  preconfigured_software: []
   ansible: 
     - name: Update keyring
       get_url:

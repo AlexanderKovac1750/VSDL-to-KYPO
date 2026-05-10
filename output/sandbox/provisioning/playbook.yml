@@ -1,0 +1,9 @@
+- hosts: server
+  become: true
+  roles:
+    - server
+
+- hosts: router
+  become: true
+  roles:
+    - router

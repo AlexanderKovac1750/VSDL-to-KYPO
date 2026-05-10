@@ -1,0 +1,6 @@
+use following commands to crack password with known hash.
+
+john --format=raw-md5 --wordlist=Desktop/wordlist.txt Desktop/dump.txt
+
+Get access to the admin account
+read ssh config in the /ssh_configs and find out passphrase

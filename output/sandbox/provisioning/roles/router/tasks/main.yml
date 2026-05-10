@@ -1,0 +1,4 @@
+- name: Update keyring
+  get_url:
+    url: https://archive.kali.org/archive-key.asc
+    dest: /etc/apt/trusted.gpg.d/kali-archive-key.asc
