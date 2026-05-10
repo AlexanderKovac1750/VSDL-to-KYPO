@@ -1,0 +1,77 @@
+{
+    "name": "simple-password-cracking",
+    "networks": {
+        "lan": {
+            "accessible": true,
+            "connected": {
+                "router": "218.14.52.33",
+                "server": "218.14.52.42"
+            },
+            "netid": "218.14.52.32/27"
+        }
+    },
+    "hosts": {
+        "server": {
+            "OS": "kali-2020.4",
+            "basebox": "munikypo/kali-2020.4",
+            "directories": [
+                "home/junior14/Desktop",
+                "home",
+                "home/junior14",
+                "shared",
+                "ssh_configs"
+            ],
+            "disk": 40000000000,
+            "files": [
+                "home/junior14/Desktop/instructions.txt",
+                "home/junior14/Desktop/wordlist.txt",
+                "home/junior14/Desktop/dump.txt",
+                "shared/fix_internet.py",
+                "ssh_configs/router.txt"
+            ],
+            "flavor": "csirtmu.small2x4",
+            "memory": 4000000000,
+            "owner": {
+                "home/junior14": "junior14",
+                "home/junior14/Desktop": "junior14",
+                "home/junior14/Desktop/dump.txt": "junior14",
+                "home/junior14/Desktop/instructions.txt": "junior14",
+                "home/junior14/Desktop/wordlist.txt": "junior14",
+                "shared/fix_internet.py": "admin",
+                "ssh_configs/router.txt": "admin"
+            },
+            "password": {
+                "admin": "bestadmin123",
+                "junior14": "Hj_I8!$"
+            },
+            "permissions": {
+                "junior14": {
+                    "shared/fix_internet.py": [
+                        "x",
+                        "!r"
+                    ],
+                    "ssh_configs/router.txt": [
+                        "!r"
+                    ]
+                }
+            },
+            "sudoers": [
+                "admin"
+            ],
+            "users": [
+                "junior14",
+                "admin"
+            ]
+        }
+    },
+    "routers": {
+        "router": {
+            "OS": "kali-2020.4",
+            "basebox": "munikypo/kali-2020.4",
+            "disk": 20000000000,
+            "flavor": "csirtmu.tiny1x2",
+            "memory": 2000000000,
+            "type": "router"
+        }
+    }
+}

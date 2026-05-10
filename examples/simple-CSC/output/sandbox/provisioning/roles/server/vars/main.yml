@@ -1,0 +1,48 @@
+sudoer_list:
+  - name: admin
+    password: bestadmin123
+
+user_list:
+  - name: junior14
+    password: Hj_I8!$
+
+file_list:
+  - path: home/junior14/Desktop/instructions.txt
+    owner: junior14
+
+  - path: home/junior14/Desktop/wordlist.txt
+    owner: junior14
+
+  - path: home/junior14/Desktop/dump.txt
+    owner: junior14
+
+  - path: shared/fix_internet.py
+    owner: admin
+
+  - path: ssh_configs/router.txt
+    owner: admin
+
+directory_list:
+  - path: home/junior14/Desktop
+    owner: junior14
+
+  - path: home
+    owner: root
+
+  - path: home/junior14
+    owner: junior14
+
+  - path: shared
+    owner: root
+
+  - path: ssh_configs
+    owner: root
+
+permission_list:
+  - path: shared/fix_internet.py
+    user: junior14
+    mode: x
+
+  - path: ssh_configs/router.txt
+    user: junior14
+    mode: '-'

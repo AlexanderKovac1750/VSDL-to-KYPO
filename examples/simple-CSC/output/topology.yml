@@ -1,0 +1,37 @@
+name: simple-password-cracking
+hosts:
+  - name: server
+    flavor: csirtmu.small2x4
+    base_box:
+      image: munikypo/kali-2020.4
+      mgmt_user: debian
+      mgmt_protocol: ssh
+
+routers:
+  - name: router
+    flavor: csirtmu.tiny1x2
+    base_box:
+      image: munikypo/kali-2020.4
+      mgmt_user: debian
+      mgmt_protocol: ssh
+
+wan:
+  name: internet-connection
+  cidr: 100.100.100.0/24
+
+networks:
+  - name: lan
+    cidr: 218.14.52.32/27
+    accessible_by_user: false
+
+net_mappings:
+  - host: server
+    network: lan
+    ip: 218.14.52.42
+
+router_mappings:
+  - router: router
+    network: lan
+    ip: 218.14.52.33
+
+groups: []

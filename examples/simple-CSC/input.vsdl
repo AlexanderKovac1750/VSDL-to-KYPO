@@ -1,0 +1,39 @@
+scenario simple-password-cracking{
+node server{
+	OS is kali above 2020;
+
+	exists user junior14 with password Hj_I8!$;
+	exists user admin with password bestadmin123;
+	user admin can sudo;
+
+	contains directory ssh_configs;
+	contains file /ssh_configs/router.txt owned by admin;
+	contains file /shared/fix_internet.py owned by admin;
+
+	contains directory /home/junior14 owned by junior14;
+	contains directory /home/junior14/Desktop owned by junior14;
+	contains file /home/junior14/Desktop/dump.txt owned by junior14;
+	contains file /home/junior14/Desktop/wordlist.txt owned by junior14;
+	contains file /home/junior14/Desktop/instructions.txt owned by junior14;
+
+	not user junior14 can read ssh_configs/router.txt;
+	not user junior14 can read /shared/fix_internet.py;
+	user junior14 can execute /shared/fix_internet.py;
+
+	disk is larger than 20 GB;
+
+}
+
+node router{
+	type is router;
+	basebox is munikypo/kali-2020.4;
+	flavor is csirtmu.tiny1x2;
+}
+
+network lan{
+	addresses range from 218.14.52.32 to 218.14.52.63;
+	node router is connected;
+	node server is connected;
+	is user accessible;
+}
+}
