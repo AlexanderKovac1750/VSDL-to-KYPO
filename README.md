@@ -19,3 +19,9 @@ The program can be easily installed and launched by following these steps:
 
 steps 3 and 4 can be skipped if they are already installed
 step 5,6 and 10 can be ignored if you do not wish to run the program in virtual environment
+
+# Deployment platforms
+The generated sandbox definition can be deployed on KYPO CSC or CRP.
+We do not cover the installation process of the deployment platforms.
+For KYPO CSC see: https://gitlab.ics.muni.cz/muni-kypo-csc/cyber-sandbox-creator/-/tree/2e6fc89b815b0daa423355369e1fb7e9eaf8bdad/
+For KYPO CRP see: https://gitlab.ics.muni.cz/muni-kypo-crp/kypo-crp-docs/-/blob/f7aadccb2c9cfdfbe75652bcd79d07bbf82621b5/README.md
