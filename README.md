@@ -3,7 +3,6 @@ This repository holds the VSDL-to-KYPO or V2K for short. The V2K is tool for des
 
 # Technical documentation
 The technical documentation is in form of pdf in the repository.
-It is currently being improved and will undergo multiple updates, before being completed.
 
 # Fast installation
 The program can be easily installed and launched by following these steps:
