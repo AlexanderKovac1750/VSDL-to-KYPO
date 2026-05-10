@@ -1,51 +1,56 @@
 {
-    "name": "BP-kovac-test",
+    "name": "simple-password-cracking",
     "networks": {
-        "desktop-switch": {
+        "lan": {
+            "accessible": true,
             "connected": {
-                "desktop": "192.168.0.15",
-                "router": "192.168.0.1"
+                "router": "218.14.52.33",
+                "server": "218.14.52.42"
             },
-            "netid": "192.168.0.0/24"
-        },
-        "server-switch": {
-            "connected": {
-                "router": "192.168.1.1",
-                "server": "192.168.1.15"
-            },
-            "netid": "192.168.1.0/25"
+            "netid": "218.14.52.32/27"
         }
     },
     "hosts": {
-        "desktop": {
-            "OS": "kali",
-            "basebox": "kali",
+        "server": {
+            "OS": "kali-2020.4",
+            "basebox": "munikypo/kali-2020.4",
             "directories": [
-                "documents"
+                "home/junior14/Desktop",
+                "home",
+                "home/junior14",
+                "shared",
+                "ssh_configs"
             ],
-            "disk": 20000000000,
+            "disk": 40000000000,
             "files": [
-                "documents/market strategy.txt",
-                "documents/instructions.txt"
+                "home/junior14/Desktop/instructions.txt",
+                "home/junior14/Desktop/wordlist.txt",
+                "home/junior14/Desktop/dump.txt",
+                "shared/fix_internet.py",
+                "ssh_configs/router.txt"
             ],
-            "flavor": "csirtmu.tiny1x2",
-            "memory": 2000000000,
-            "mounted": [
-                "nghttp2-client",
-                "vim"
-            ],
+            "flavor": "csirtmu.small2x4",
+            "memory": 4000000000,
             "owner": {
-                "documents/market strategy.txt": "admin"
+                "home/junior14": "junior14",
+                "home/junior14/Desktop": "junior14",
+                "home/junior14/Desktop/dump.txt": "junior14",
+                "home/junior14/Desktop/instructions.txt": "junior14",
+                "home/junior14/Desktop/wordlist.txt": "junior14",
+                "shared/fix_internet.py": "admin",
+                "ssh_configs/router.txt": "admin"
             },
             "password": {
-                "admin": "kali"
+                "admin": "bestadmin123",
+                "junior14": "Hj_I8!$"
             },
             "permissions": {
-                "guest": {
-                    "documents/instructions.txt": [
-                        "r"
+                "junior14": {
+                    "shared/fix_internet.py": [
+                        "x",
+                        "!r"
                     ],
-                    "documents/market strategy.txt": [
+                    "ssh_configs/router.txt": [
                         "!r"
                     ]
                 }
@@ -54,72 +59,19 @@
                 "admin"
             ],
             "users": [
-                "guest",
+                "junior14",
                 "admin"
             ]
-        },
-        "server": {
-            "OS": "ubuntu-22.04",
-            "basebox": "ubuntu-22.04",
-            "disk": 20000000000,
-            "flavor": "csirtmu.tiny1x2",
-            "memory": 2000000000,
-            "mounted": [
-                "http_server"
-            ],
-            "sudoers": [
-                "admin"
-            ],
-            "users": [
-                "admin"
-            ],
-            "versions": {
-                "http_server": "2.4.34"
-            }
         }
     },
     "routers": {
         "router": {
-            "OS": "kali",
-            "basebox": "kali",
+            "OS": "kali-2020.4",
+            "basebox": "munikypo/kali-2020.4",
             "disk": 20000000000,
             "flavor": "csirtmu.tiny1x2",
             "memory": 2000000000,
-            "sudoers": [
-                "admin"
-            ],
-            "type": "router",
-            "users": [
-                "admin"
-            ],
-            "blocks": {
-                "port": [
-                    {
-                        "dst": 22,
-                        "src": "192.168.0.0/24"
-                    }
-                ],
-                "ip": [
-                    {
-                        "dst": "146.190.62.39",
-                        "src": "192.168.1.0/25"
-                    }
-                ]
-            },
-            "forwards": {
-                "port": {
-                    "880": {
-                        "dst": 8080,
-                        "src": "192.168.0.0/24"
-                    }
-                },
-                "ip": {
-                    "213.81.150.11": {
-                        "dst": "195.49.188.162",
-                        "src": "192.168.1.0/25"
-                    }
-                }
-            }
+            "type": "router"
         }
     }
 }

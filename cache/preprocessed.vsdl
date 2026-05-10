@@ -1,45 +1,33 @@
-scenario BP-kovac-test {
-node desktop {
-	OS is kali ;
-	exists user admin with password kali ;
+scenario simple-password-cracking {
+node server {
+	OS is kali above 2020 ;
+	exists user junior14 with password Hj_I8!$ ;
+	exists user admin with password bestadmin123 ;
 	user admin can sudo ;
-	exists user guest ;
-	contains file "documents/market strategy.txt" owned by admin ;
-	contains file documents/instructions.txt ;
-	user guest can read documents/instructions.txt ;
-	not ( user guest can read "documents/market strategy.txt" ) ;
-	mounts software vim ;
-	mounts software nghttp2-client ;
+	contains directory ssh_configs ;
+	contains file /ssh_configs/router.txt owned by admin ;
+	contains file /shared/fix_internet.py owned by admin ;
+	contains directory /home/junior14 owned by junior14 ;
+	contains directory /home/junior14/Desktop owned by junior14 ;
+	contains file /home/junior14/Desktop/dump.txt owned by junior14 ;
+	contains file /home/junior14/Desktop/wordlist.txt owned by junior14 ;
+	contains file /home/junior14/Desktop/instructions.txt owned by junior14 ;
+	not ( user junior14 can read ssh_configs/router.txt ) ;
+	not ( user junior14 can read /shared/fix_internet.py ) ;
+	user junior14 can execute /shared/fix_internet.py ;
+	disk is larger than 20 GB ;
 }
 
 node router {
 	type is router ;
-	OS is same as desktop ;
-	memory is larger than 1 GB ;
-	exists user admin ;
-	user admin can sudo ;
+	basebox is munikypo/kali-2020.4 ;
+	flavor is csirtmu.tiny1x2 ;
 }
 
-node server {
-	exists user admin ;
-	user admin can sudo ;
-	OS is ubuntu ;
-	( ( ( mounts software http_server from 2.4.20 below 2.4.44 ) ) or ( ( mounts software clustered_data_ontap above 0 ) ) or ( ( OS is ubuntu_linux from 16.04 below 16.5 ) or ( OS is ubuntu_linux from 18.04 below 18.5 ) or ( OS is ubuntu_linux from 20.04 below 20.5 ) ) or ( ( OS is leap from 15.1 below 15.2 ) or ( OS is leap from 15.2 below 15.3 ) ) or ( ( OS is debian_linux from 10.0 below 10.1 ) ) or ( ( OS is fedora from 31 below 32 ) or ( OS is fedora from 32 below 33 ) ) or ( ( mounts software communications_element_manager from 8.2.0 to 8.2.2 ) or ( mounts software communications_session_report_manager from 8.2.0 to 8.2.2 ) or ( mounts software communications_session_route_manager from 8.2.0 to 8.2.2 ) or ( mounts software enterprise_manager_ops_center from 12.4.0.0 below 12.4.0.1 ) or ( mounts software hyperion_infrastructure_technology from 11.1.2.4 below 11.1.2.5 ) or ( mounts software instantis_enterprisetrack from 17.1 below 17.2 ) or ( mounts software instantis_enterprisetrack from 17.2 below 17.3 ) or ( mounts software instantis_enterprisetrack from 17.3 below 17.4 ) or ( mounts software zfs_storage_appliance_kit from 8.8 below 8.9 ) ) ) ;
-}
-
-network server-switch {
-	ip range from 192.168.1.0 to 192.168.1.127 ;
-	node server has IP 192.168.1.15 ;
+network lan {
+	addresses range from 218.14.52.32 to 218.14.52.63 ;
 	node router is connected ;
-	firewall forwards ip 213.81.150.11 to 195.49.188.162 ;
-	firewall blocks ip 146.190.62.39 ;
-}
-
-network desktop-switch {
-	ip range from 192.168.0.0 to 192.168.0.255 ;
-	node desktop has IP 192.168.0.15 ;
-	node router is connected ;
-	firewall blocks port 22 ;
-	firewall forwards port 880 to 8080 ;
+	node server is connected ;
+	is user accessible ;
 }
 }
