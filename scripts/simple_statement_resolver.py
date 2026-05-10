@@ -94,8 +94,8 @@ def resolve_comparison(attribute, object_type, words, declared_terms):
 def make_version_statement(software, version_hints, term_version, prefix=""):
 
     #ignore if no versions are available
-    if(len(sv.get_versions(software))==0):
-        return '(= 0 1)'
+    if(len(sv.get_versions(software))==0 and prefix==""):
+        return f'(= "Unknown" "Software" "{software}")'
     sub_statements = []
 
     #parse version hints
@@ -159,8 +159,9 @@ def resolve_simple_statement(name, isNetwork, words, declared_terms, implication
 
         #handle comparison ops (above, below...)
         version_hints = words[3:]
+        statement_version = ""
         if(version_hints != []):
-            return make_version_statement(os_name, version_hints, term_os, os_name+"-")
+            statement_version = make_version_statement(os_name, version_hints, term_os, os_name+"-")
 
         os_v0 = os_name
         os_v1 = os_name
@@ -175,7 +176,7 @@ def resolve_simple_statement(name, isNetwork, words, declared_terms, implication
             os_v1 += "-" + sv.encode_version(sv.change_version(version,1))
 
         #bind node's OS within boundaries
-        return f'(and (str.<= "{os_v0}" {term_os}) (str.< {term_os} "{os_v1}"))'
+        return f'(and (str.<= "{os_v0}" {term_os}) (str.< {term_os} "{os_v1}") {statement_version})'
     
     #common "is" statements
     direct_keywords = ["type", "flavor", "cpu", "disk", "OS", "memory",

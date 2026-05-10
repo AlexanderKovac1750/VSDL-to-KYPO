@@ -109,7 +109,7 @@ def provision_vars(host, config):
             #make entry for user list
             user_entry = dict({
                 "name":user,
-                "password":user
+                "password":password
                 })
             user_list.append(user_entry)
             
@@ -248,12 +248,15 @@ def provision_software(host, config):
         tasks += sv.get_ansible_scripts(config["basebox"], software, version)
 
     #handle unversioned software
+    uses_dnf = "fedorea" in config["OS"] or "redhat" in config["OS"]
+    package_manager = "dnf" if uses_dnf else "apt"
+    
     if(len(unversioned)!=0):
         
         install_mounted = dict()
         install_mounted["name"]="Install packages"
         
-        install_mounted["apt"]=dict({
+        install_mounted[package_manager]=dict({
             "name":unversioned,
             "update_cache":True,
             "state":"present"
