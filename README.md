@@ -27,3 +27,7 @@ We do not cover the installation process of the deployment platforms.
 For KYPO CSC see: https://gitlab.ics.muni.cz/muni-kypo-csc/cyber-sandbox-creator/-/tree/2e6fc89b815b0daa423355369e1fb7e9eaf8bdad/
 
 For KYPO CRP see: https://gitlab.ics.muni.cz/muni-kypo-crp/kypo-crp-docs/-/blob/f7aadccb2c9cfdfbe75652bcd79d07bbf82621b5/README.md
+
+# User friendly web App
+The V2K is quite complicated, for simple scenarios not requiring all quirks and capabilities of V2K it may be too complex.
+We provide more lightweight implementation in form of PWA: https://github.com/AlexanderKovac1750/VSDL-lite-scenario-editor.git
